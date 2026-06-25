@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopZone – La meilleure boutique en ligne</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f3f3f3; color: #111; }
+
+        /* ── TOP BAR ── */
+        .topbar {
+            background: #131921;
+            color: white;
+            font-size: 13px;
+            padding: 4px 0;
+        }
+        .topbar a { color: #ddd; text-decoration: none; margin: 0 10px; }
+        .topbar a:hover { color: #febd69; }
+
+        /* ── NAVBAR PRINCIPALE ── */
+        .main-nav {
+            background: #232f3e;
+            padding: 10px 0;
+        }
+        .brand-logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: white !important;
+            text-decoration: none;
+            border: 2px solid transparent;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .brand-logo:hover { border-color: white; }
+        .brand-logo span { color: #febd69; }
+
+        /* Barre de recherche */
+        .search-bar {
+            flex: 1;
+            max-width: 700px;
+            display: flex;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0 15px;
+        }
+        .search-bar select {
+            background: #f3f3f3;
+            border: none;
+            padding: 0 8px;
+            font-size: 12px;
+            color: #555;
+            border-right: 1px solid #ccc;
+            min-width: 60px;
+        }
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 8px 12px;
+            font-size: 14px;
+            outline: none;
+        }
+        .search-bar button {
+            background: #febd69;
+            border: none;
+            padding: 0 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-bar button:hover { background: #f3a847; }
+
+        /* Nav actions */
+        .nav-action {
+            color: white;
+            text-decoration: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            line-height: 1.3;
+            border: 2px solid transparent;
+        }
+        .nav-action:hover { border-color: white; color: white; }
+        .nav-action small { display: block; font-size: 11px; color: #ccc; }
+        .nav-action strong { display: block; font-size: 14px; }
+
+        /* Cart */
+        .cart-btn {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 2px solid transparent;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .cart-btn:hover { border-color: white; color: white; }
+        .cart-count {
+            background: #febd69;
+            color: #111;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        /* ── NAV SECONDAIRE ── */
+        .sub-nav {
+            background: #37475a;
+            padding: 6px 0;
+        }
+        .sub-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 4px 12px;
+            border-radius: 3px;
+            border: 2px solid transparent;
+        }
+        .sub-nav a:hover { border-color: white; }
+
+        /* ── MESSAGES ── */
+        .messages-container { padding: 10px 0 0; }
+        .alert { border-radius: 4px; border: none; font-size: 14px; }
+
+        /* ── FOOTER ── */
+        .footer-top {
+            background: #37475a;
+            color: white;
+            padding: 8px 0;
+            text-align: center;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .footer-top:hover { background: #485769; }
+        .footer-mid {
+            background: #232f3e;
+            color: white;
+            padding: 40px 0 30px;
+        }
+        .footer-mid h6 { font-weight: 700; font-size: 14px; margin-bottom: 12px; }
+        .footer-mid a { color: #ddd; text-decoration: none; display: block; font-size: 13px; margin-bottom: 6px; }
+        .footer-mid a:hover { color: #febd69; }
+        .footer-bottom {
+            background: #131921;
+            color: #ddd;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        /* ── CARDS PRODUITS ── */
+        .product-card {
+            background: white;
+            border-radius: 4px;
+            padding: 15px;
+            height: 100%;
+            transition: box-shadow 0.2s;
+            border: 1px solid #ddd;
+        }
+        .product-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 12px;
+        }
+        .product-card .price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #B12704;
+        }
+        .product-card .price small {
+            font-size: 0.75rem;
+            color: #555;
+            font-weight: 400;
+        }
+
+        /* ── BOUTONS ── */
+        .btn-amazon {
+            background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+            border: 1px solid #a88734;
+            color: #111;
+            border-radius: 3px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-amazon:hover {
+            background: linear-gradient(to bottom, #f5d78e, #edb932);
+            border-color: #846a29;
+            color: #111;
+        }
+        .btn-amazon-primary {
+            background: linear-gradient(to bottom, #f0c14b, #e3a917);
+            border: 1px solid #a88734;
+            color: #111;
+            border-radius: 20px;
+            padding: 9px 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .btn-amazon-primary:hover {
+            background: linear-gradient(to bottom, #e8b93e, #d9a010);
+            color: #111;
+        }
+        .btn-add-cart {
+            background: linear-gradient(to bottom, #f7ca00, #f5a623);
+            border: 1px solid #c8860f;
+            color: #111;
+            border-radius: 20px;
+            padding: 9px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            width: 100%;
+        }
+        .btn-add-cart:hover {
+            background: linear-gradient(to bottom, #f0be00, #e89a1a);
+            color: #111;
+        }
+
+        /* ── SECTIONS ── */
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #febd69;
+            display: inline-block;
+        }
+
+        /* ── BREADCRUMB ── */
+        .breadcrumb { background: none; padding: 8px 0; font-size: 13px; }
+        .breadcrumb-item a { color: #007185; text-decoration: none; }
+        .breadcrumb-item a:hover { color: #c7511f; text-decoration: underline; }
+
+        /* ── BADGE PROMO ── */
+        .badge-promo {
+            background: #cc0c39;
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+        /* ── ÉTOILES ── */
+        .stars { color: #febd69; font-size: 13px; }
+
+        /* ── SIDEBAR FILTRE ── */
+        .filter-sidebar { background: white; border: 1px solid #ddd; border-radius: 4px; padding: 15px; }
+        .filter-sidebar h6 { font-weight: 700; font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 10px; }
+
+        /* ── FORMS ── */
+        .form-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 30px;
+        }
+        .form-control:focus { border-color: #febd69; box-shadow: 0 0 0 3px rgba(254,189,105,0.3); }
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="container d-flex justify-content-between align-items-center">
+        <span><i class="fa fa-map-marker-alt me-1"></i>Livraison au Maroc</span>
+        <div>
+            {% if user.is_authenticated %}
+                <a href="{% url 'profil' %}"><i class="fa fa-user me-1"></i>{{ user.first_name }}</a>
+                <a href="{% url 'mes_commandes' %}"><i class="fa fa-list me-1"></i>Commandes</a>
+                <a href="{% url 'deconnexion' %}"><i class="fa fa-sign-out-alt me-1"></i>Déconnexion</a>
+            {% else %}
+                <a href="{% url 'connexion' %}">Connexion</a>
+                <a href="{% url 'inscription' %}">Créer un compte</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- NAVBAR PRINCIPALE -->
+<nav class="main-nav">
+    <div class="container d-flex align-items-center gap-3">
+
+        <!-- Logo -->
+        <a href="{% url 'accueil' %}" class="brand-logo">Shop<span>Zone</span></a>
+
+        <!-- Barre de recherche -->
+        <form method="GET" action="{% url 'liste_produits' %}" class="search-bar d-none d-md-flex flex-grow-1">
+            <input type="text" name="q" placeholder="Rechercher un produit, une marque..." {% if recherche %}value="{{ recherche }}"{% endif %}>
+            <button type="submit"><i class="fa fa-search" style="color:#111;font-size:16px;"></i></button>
+        </form>
+
+        <!-- Actions -->
+        <div class="d-flex align-items-center gap-2 ms-auto ms-md-0">
+            {% if user.is_authenticated %}
+            <div class="dropdown">
+                <!-- <a href="#" class="nav-action dropdown-toggle" data-bs-toggle="dropdown">
+                    <small>Bonjour,</small>
+                    <strong>{{ user.first_name }}</strong>
+                </a> -->
+                <a href="#" class="nav-action dropdown-toggle d-flex align-items-center"
+   data-bs-toggle="dropdown">
+    <small class="me-1 mb-0">Bonjour,</small>
+    <strong>{{ user.first_name }}</strong>
+</a>
+                <ul class="dropdown-menu dropdown-menu-end" style="font-size:13px;min-width:200px;">
+                    <li><a class="dropdown-item" href="{% url 'profil' %}"><i class="fa fa-user me-2"></i>Mon profil</a></li>
+                    <li><a class="dropdown-item" href="{% url 'mes_commandes' %}"><i class="fa fa-box me-2"></i>Mes commandes</a></li>
+                    <li><a class="dropdown-item" href="{% url 'mes_reclamations' %}"><i class="fas fa-exclamation-triangle me-2"></i>Mes reclamations</a></li>
+                    <li><a class="dropdown-item" href="{% url 'mes_demandes_sav' %}"><i class="fas fa-shield-alt me-2"></i>Mes Demande SAV</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="{% url 'deconnexion' %}"><i class="fa fa-sign-out-alt me-2"></i>Déconnexion</a></li>
+                </ul>
+            </div>
+            {% else %}
+            <a href="{% url 'connexion' %}" class="nav-action">
+                <small>Identifiez-vous</small>
+                <strong>Compte</strong>
+            </a>
+            {% endif %}
+
+            <a href="{% url 'panier' %}" class="cart-btn">
+                <div class="position-relative">
+                    <i class="fa fa-shopping-cart fa-lg"></i>
+                    <span class="cart-count position-absolute" style="top:-10px;right:-10px;">{{ panier_count|default:0 }}</span>
+                </div>
+                <span class="d-none d-lg-inline fw-bold">Panier</span>
+            </a>
+
+            {% if user.is_authenticated %}
+            
+            <a href="{% url 'creer_reclamation' %}" class="btn-amazon-primary btn text-decoration-none px-4 py-2">
+                        <i class="fa fa-shopping-bag me-2"></i>réclamation
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<!-- NAV SECONDAIRE -->
+<div class="sub-nav">
+    <div class="container d-flex gap-1 flex-wrap">
+        <a href="{% url 'liste_produits' %}"><i class="fa fa-th me-1"></i>Tous les produits</a>
+        <a href="{% url 'liste_produits' %}?categorie=1">Téléphones</a>
+        <a href="{% url 'liste_produits' %}?categorie=2">Vêtements</a>
+        <a href="{% url 'liste_produits' %}?categorie=3">Chaussures</a>
+        <a href="{% url 'liste_produits' %}?categorie=4">Électroménager</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'mes_commandes' %}" class="ms-auto"><i class="fa fa-box me-1"></i>Mes commandes</a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- MESSAGES -->
+<div class="container messages-container">
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show mt-2" style="font-size:13px;">
+        <i class="fa fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% else %}info-circle{% endif %} me-2"></i>
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+</div>
+
+{% block content %}{% endblock %}
+
+<!-- FOOTER -->
+<div class="footer-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <div class="container">Retour en haut ↑</div>
+</div>
+
+<div class="footer-mid">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3 col-6">
+                <h6>Apprenez-en plus</h6>
+                <a href="#">À propos de ShopZone</a>
+                <a href="#">Carrières</a>
+                <a href="#">Presse</a>
+            </div>
+            <div class="col-md-3 col-6">
+                <h6>Gagnez de l'argent</h6>
+                <a href="#">Vendez sur ShopZone</a>
+                <a href="#">Programme affilié</a>
+            </div>
+            <div class="col-md-3 col-6">
+                <h6>Aide & Service client</h6>
+                <a href="{% url 'support' %}">Centre d'aide</a>
+                <a href="#">Retours & Échanges</a>
+                <a href="#"> Réclamation</a>
+            </div>
+            <div class="col-md-3 col-6">
+                <h6>Suivez-nous</h6>
+                <a href="#"><i class="fab fa-facebook me-2"></i>Facebook</a>
+                <a href="#"><i class="fab fa-instagram me-2"></i>Instagram</a>
+                <a href="#"><i class="fab fa-twitter me-2"></i>Twitter</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer-bottom">
+    <div class="container">
+        <a href="{% url 'accueil' %}" style="color:#febd69;text-decoration:none;font-weight:700;">ShopZone</a>
+        &nbsp;|&nbsp; © 2026 Tous droits réservés &nbsp;|&nbsp;
+        <a href="#" style="color:#ddd;">Confidentialité</a> &nbsp;|&nbsp;
+        <a href="#" style="color:#ddd;">Conditions d'utilisation</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

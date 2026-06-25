@@ -1,0 +1,67 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<div class="container py-4">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="font-size:13px;">
+            <li class="breadcrumb-item"><a href="{% url 'accueil' %}">Accueil</a></li>
+            <li class="breadcrumb-item active">Mes commandes</li>
+        </ol>
+    </nav>
+
+    <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:20px;">
+        <i class="fa fa-box me-2" style="color:#febd69;"></i>Historique des commandes
+    </h2>
+
+    {% if commandes %}
+    <div style="background:white;border:1px solid #ddd;border-radius:4px;overflow:hidden;">
+        <!-- En-tête -->
+        <div style="background:#f3f3f3;border-bottom:1px solid #ddd;padding:12px 20px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr 120px;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;">
+            <span>Commande</span>
+            <span>Date</span>
+            <span>Statut</span>
+            <span>Total</span>
+            <span>Action</span>
+        </div>
+        {% for commande in commandes %}
+        <div style="padding:15px 20px;border-bottom:1px solid #eee;display:grid;grid-template-columns:1fr 1fr 1fr 1fr 120px;align-items:center;font-size:14px;">
+            <div>
+                <span style="color:#007185;font-weight:600;">#{{ commande.id }}</span><br>
+                <span style="font-size:12px;color:#888;">{{ commande.lignes.count }} article(s)</span>
+            </div>
+            <div style="font-size:13px;color:#555;">{{ commande.date_commande|date:"d/m/Y" }}<br>
+                <span style="font-size:11px;">{{ commande.date_commande|date:"H:i" }}</span>
+            </div>
+            <div>
+                {% if commande.statut == 'en_attente' %}
+                    <span style="background:#fff8e7;color:#f59e0b;padding:4px 10px;border-radius:3px;font-size:12px;font-weight:600;">⏳ En attente</span>
+                {% elif commande.statut == 'confirmee' %}
+                    <span style="background:#e8f5e9;color:#2e7d32;padding:4px 10px;border-radius:3px;font-size:12px;font-weight:600;">✅ Confirmée</span>
+                {% elif commande.statut == 'en_preparation' %}
+                    <span style="background:#e3f2fd;color:#1565c0;padding:4px 10px;border-radius:3px;font-size:12px;font-weight:600;">🔧 En préparation</span>
+                {% elif commande.statut == 'annulee' %}
+                    <span style="background:#ffebee;color:#c62828;padding:4px 10px;border-radius:3px;font-size:12px;font-weight:600;">❌ Annulée</span>
+                {% endif %}
+            </div>
+            <div class="price" style="font-size:1.1rem;">{{ commande.montant_total }} DH</div>
+            <div>
+                <a href="{% url 'detail_commande' commande.id %}" class="btn-amazon btn" style="font-size:12px;padding:6px 12px;">
+                    <i class="fa fa-eye me-1"></i>Détails
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div style="background:white;border:1px solid #ddd;border-radius:4px;padding:50px;text-align:center;">
+        <i class="fa fa-box-open fa-4x" style="color:#ddd;margin-bottom:20px;"></i>
+        <h4 style="color:#555;margin-bottom:10px;">Aucune commande</h4>
+        <p style="color:#888;font-size:14px;margin-bottom:20px;">Vous n'avez pas encore passé de commande.</p>
+        <a href="{% url 'liste_produits' %}" class="btn-amazon-primary btn text-decoration-none px-4">
+            <i class="fa fa-shopping-bag me-2"></i>Commencer vos achats
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}\

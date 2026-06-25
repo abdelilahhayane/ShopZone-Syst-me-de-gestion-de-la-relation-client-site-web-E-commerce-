@@ -1,0 +1,71 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<div class="container py-4">
+
+    <div class="row justify-content-center">
+        
+        <!-- CONTENU RÉCLAMATION CENTRÉ -->
+        <div class="col-md-8 col-lg-6">
+
+            <div style="background:white;border:1px solid #ddd;border-radius:4px;padding:25px;">
+                
+                <h5 style="font-size:16px;font-weight:700;border-bottom:2px solid #dc3545;padding-bottom:10px;margin-bottom:20px;">
+                    <i class="fa fa-exclamation-circle me-2" style="color:#dc3545;"></i>
+                    Créer une réclamation
+                </h5>
+
+                <p style="font-size:13px;color:#6c757d;margin-bottom:20px;">
+                    Veuillez remplir le formulaire ci-dessous pour signaler un problème concernant votre commande.
+                </p>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;">
+                            Sujet
+                        </label>
+                        {{ form.sujet }}
+                        {% if form.sujet.errors %}
+                            <div style="color:#dc3545;font-size:12px;margin-top:5px;">
+                                {{ form.sujet.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;">
+                            Description du problème
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div style="color:#dc3545;font-size:12px;margin-top:5px;">
+                                {{ form.description.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div style="background:#f8f9fa;border-left:4px solid #0dcaf0;padding:12px 15px;border-radius:4px;margin-bottom:20px;">
+                        <i class="fa fa-info-circle me-2" style="color:#0dcaf0;"></i>
+                        <strong style="font-size:13px;">Information :</strong>
+                        <span style="font-size:13px;color:#6c757d;">Votre réclamation sera examinée par notre service client dans les plus brefs délais.</span>
+                    </div>
+
+                    <div style="display:flex;justify-content:flex-end;gap:10px;">
+                        <a href="{% url 'accueil' %}" 
+                            style="background:#6c757d;color:white;border:none;border-radius:4px;padding:8px 20px;font-size:13px;text-decoration:none;cursor:pointer;display:inline-block;">
+                            <i class="fa fa-times me-2"></i>Annuler
+                        </a>
+                        <button type="submit" 
+                                style="background:#dc3545;color:white;border:none;border-radius:4px;padding:8px 20px;font-size:13px;cursor:pointer;">
+                            <i class="fa fa-paper-plane me-2"></i>Envoyer la réclamation
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

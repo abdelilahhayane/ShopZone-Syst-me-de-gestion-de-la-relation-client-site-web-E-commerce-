@@ -1,0 +1,225 @@
+<!-- store/templates/store/sav.html -->
+{% extends 'store/base.html' %}
+{% block content %}
+<div class="container py-4">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="font-size:13px;">
+            <li class="breadcrumb-item"><a href="{% url 'accueil' %}">Accueil</a></li>
+            <li class="breadcrumb-item active">Service Après-Vente</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius:12px;">
+                        <i class="fas fa-check-circle me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- En-tête -->
+            <div style="text-align:center;margin-bottom:30px;">
+                <div style="width:70px;height:70px;background:linear-gradient(135deg,#17a2b8,#0dcaf0);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:32px;color:white;">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2 style="font-size:24px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">
+                    Service Après-Vente
+                </h2>
+                <p style="color:#6c757d;font-size:14px;">
+                    Retours, échanges et garantie de vos produits en toute simplicité
+                </p>
+            </div>
+
+            <!-- Processus -->
+            <!-- <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:30px;">
+                <div style="text-align:center;padding:12px;background:#f8f9fa;border-radius:8px;">
+                    <div style="font-size:24px;color:#17a2b8;">📝</div>
+                    <div style="font-size:11px;font-weight:600;color:#1a1a2e;">1. Demande</div>
+                </div>
+                <div style="text-align:center;padding:12px;background:#f8f9fa;border-radius:8px;">
+                    <div style="font-size:24px;color:#17a2b8;">✅</div>
+                    <div style="font-size:11px;font-weight:600;color:#1a1a2e;">2. Validation</div>
+                </div>
+                <div style="text-align:center;padding:12px;background:#f8f9fa;border-radius:8px;">
+                    <div style="font-size:24px;color:#17a2b8;">🔧</div>
+                    <div style="font-size:11px;font-weight:600;color:#1a1a2e;">3. Traitement</div>
+                </div>
+                <div style="text-align:center;padding:12px;background:#f8f9fa;border-radius:8px;">
+                    <div style="font-size:24px;color:#17a2b8;">🎯</div>
+                    <div style="font-size:11px;font-weight:600;color:#1a1a2e;">4. Finalisation</div>
+                </div>
+            </div> -->
+
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:30px;">
+    <div style="text-align:center;padding:12px;background:#f8f9fa;border-radius:8px;transition:all 0.3s ease;" 
+         onmouseover="this.style.backgroundColor='#e8f5e9';this.style.transform='translateY(-3px)';" 
+         onmouseout="this.style.backgroundColor='#f8f9fa';this.style.transform='translateY(0)';">
+        <div style="width:40px;height:40px;background:#17a2b8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:18px;color:white;">
+            <i class="fas fa-pen"></i>
+        </div>
+        <div style="font-size:11px;font-weight:600;color:#1a1a2e;">1. Demande</div>
+    </div>
+    <div style="text-align:center;padding:12px;background:#f8f9fa;border-radius:8px;transition:all 0.3s ease;" 
+         onmouseover="this.style.backgroundColor='#e8f5e9';this.style.transform='translateY(-3px)';" 
+         onmouseout="this.style.backgroundColor='#f8f9fa';this.style.transform='translateY(0)';">
+        <div style="width:40px;height:40px;background:#17a2b8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:18px;color:white;">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div style="font-size:11px;font-weight:600;color:#1a1a2e;">2. Validation</div>
+    </div>
+    <div style="text-align:center;padding:12px;background:#f8f9fa;border-radius:8px;transition:all 0.3s ease;" 
+         onmouseover="this.style.backgroundColor='#e8f5e9';this.style.transform='translateY(-3px)';" 
+         onmouseout="this.style.backgroundColor='#f8f9fa';this.style.transform='translateY(0)';">
+        <div style="width:40px;height:40px;background:#17a2b8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:18px;color:white;">
+            <i class="fas fa-tools"></i>
+        </div>
+        <div style="font-size:11px;font-weight:600;color:#1a1a2e;">3. Traitement</div>
+    </div>
+    <div style="text-align:center;padding:12px;background:#f8f9fa;border-radius:8px;transition:all 0.3s ease;" 
+         onmouseover="this.style.backgroundColor='#e8f5e9';this.style.transform='translateY(-3px)';" 
+         onmouseout="this.style.backgroundColor='#f8f9fa';this.style.transform='translateY(0)';">
+        <div style="width:40px;height:40px;background:#17a2b8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:18px;color:white;">
+            <i class="fas fa-flag-checkered"></i>
+        </div>
+        <div style="font-size:11px;font-weight:600;color:#1a1a2e;">4. Finalisation</div>
+    </div>
+</div>
+
+            <!-- Formulaire -->
+            <div style="background:white;border:1px solid #e8ecf1;border-radius:16px;padding:30px;box-shadow:0 2px 10px rgba(0,0,0,0.04);">
+                
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Erreurs globales -->
+                    {% if form.errors %}
+                        <div style="background:#f8d7da;color:#721c24;padding:12px 15px;border-radius:8px;margin-bottom:15px;">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            Veuillez corriger les erreurs ci-dessous.
+                        </div>
+                    {% endif %}
+
+                    <!-- Type de demande -->
+                    <div class="mb-3">
+                        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;color:#1a1a2e;">
+                            {{ form.type_demande.label }}
+                        </label>
+                        {{ form.type_demande }}
+                        {% if form.type_demande.errors %}
+                            <div style="color:#dc3545;font-size:12px;margin-top:5px;">{{ form.type_demande.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;color:#1a1a2e;">
+                                {{ form.motif.label }}
+                            </label>
+                            {{ form.motif }}
+                            {% if form.motif.errors %}
+                                <div style="color:#dc3545;font-size:12px;margin-top:5px;">{{ form.motif.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;color:#1a1a2e;">
+                                {{ form.numero_commande.label }}
+                            </label>
+                            {{ form.numero_commande }}
+                            {% if form.numero_commande.errors %}
+                                <div style="color:#dc3545;font-size:12px;margin-top:5px;">{{ form.numero_commande.errors }}</div>
+                            {% endif %}
+                            <div style="font-size:11px;color:#6c757d;margin-top:4px;">
+                                {{ form.numero_commande.help_text }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quantité -->
+                    <div class="mb-3">
+                        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;color:#1a1a2e;">
+                            {{ form.quantite.label }}
+                        </label>
+                        {{ form.quantite }}
+                        {% if form.quantite.errors %}
+                            <div style="color:#dc3545;font-size:12px;margin-top:5px;">{{ form.quantite.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;color:#1a1a2e;">
+                            {{ form.description.label }}
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div style="color:#dc3545;font-size:12px;margin-top:5px;">{{ form.description.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Pièces jointes -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;color:#1a1a2e;">
+                                {{ form.piece_jointe.label }}
+                            </label>
+                            {{ form.piece_jointe }}
+                            <div style="font-size:11px;color:#6c757d;margin-top:4px;">
+                                {{ form.piece_jointe.help_text }}
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;color:#1a1a2e;">
+                                {{ form.piece_jointe_2.label }}
+                            </label>
+                            {{ form.piece_jointe_2 }}
+                        </div>
+                    </div>
+
+                    <!-- Info -->
+                    <div style="background:#f8f9fa;border-left:4px solid #17a2b8;padding:12px 15px;border-radius:8px;margin-bottom:20px;">
+                        <i class="fas fa-info-circle me-2" style="color:#17a2b8;"></i>
+                        <strong style="font-size:13px;">Information :</strong>
+                        <span style="font-size:13px;color:#6c757d;">
+                            Notre équipe traitera votre demande sous 48 heures ouvrées. 
+                            Vous serez notifié par email de l'avancement.
+                        </span>
+                    </div>
+
+                    <!-- Boutons -->
+                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+                        <a href="{% url 'accueil' %}" 
+                           style="background:#6c757d;color:white;border:none;border-radius:8px;padding:10px 25px;font-size:13px;text-decoration:none;cursor:pointer;display:inline-block;transition:all 0.3s ease;" 
+                           onmouseover="this.style.backgroundColor='#5a6268';" 
+                           onmouseout="this.style.backgroundColor='#6c757d';">
+                            <i class="fas fa-arrow-left me-2"></i>Retour
+                        </a>
+                        <button type="submit" 
+                                style="background:linear-gradient(135deg,#17a2b8,#0dcaf0);color:white;border:none;border-radius:8px;padding:10px 30px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.3s ease;"
+                                onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 20px rgba(23,162,184,0.3)';" 
+                                onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';">
+                            <i class="fas fa-paper-plane me-2"></i>Envoyer la demande
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus, .form-select:focus {
+        border-color: #17a2b8;
+        box-shadow: 0 0 0 3px rgba(23,162,184,0.1);
+    }
+</style>
+{% endblock %}

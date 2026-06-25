@@ -1,0 +1,324 @@
+{% extends 'store/base.html' %}
+{% block content %}
+
+<!-- HERO BANNER -->
+<div style="background:linear-gradient(135deg,#232f3e 0%,#37475a 100%);color:white;padding:50px 0;margin-bottom:20px;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <span style="background:#febd69;color:#111;padding:4px 12px;border-radius:3px;font-size:12px;font-weight:700;">NOUVELLE COLLECTION 2025</span>
+                <h1 style="font-size:2.5rem;font-weight:800;margin:15px 0 10px;line-height:1.2;">
+                    Tout ce dont vous avez<br>besoin, <span style="color:#febd69;">livré chez vous</span>
+                </h1>
+                <p style="color:#ccc;font-size:15px;margin-bottom:25px;">Des milliers de produits au meilleur prix. Livraison rapide partout au Maroc.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{% url 'liste_produits' %}" class="btn-amazon-primary btn text-decoration-none px-4 py-2">
+                        <i class="fa fa-shopping-bag me-2"></i>Voir tous les produits
+                    </a>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'inscription' %}" class="btn btn-outline-light px-4 py-2" style="border-radius:20px;font-size:14px;">
+                        Créer un compte gratuit
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- <div class="col-md-5 d-none d-md-flex justify-content-end">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:20px;text-align:center;">
+                        <div style="font-size:2rem;">📦</div>
+                        <div style="font-size:11px;margin-top:5px;">Livraison rapide</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:20px;text-align:center;">
+                        <div style="font-size:2rem;">🔒</div>
+                        <div style="font-size:11px;margin-top:5px;">Paiement sécurisé</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:20px;text-align:center;">
+                        <div style="font-size:2rem;">↩️</div>
+                        <div style="font-size:11px;margin-top:5px;">Retour facile</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:20px;text-align:center;">
+                        <div style="font-size:2rem;">🎧</div>
+                        <div style="font-size:11px;margin-top:5px;">Support 24/7</div>
+                    </div>
+                </div>
+            </div> -->
+            <div class="col-md-5 d-none d-md-flex justify-content-end">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:20px;text-align:center;">
+                        <div style="font-size:2rem;">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div style="font-size:11px;margin-top:5px;">Livraison rapide</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:20px;text-align:center;">
+                        <div style="font-size:2rem;">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div style="font-size:11px;margin-top:5px;">Paiement sécurisé</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:20px;text-align:center;">
+                        <div style="font-size:2rem;">
+                            <i class="fas fa-undo-alt"></i>
+                        </div>
+                        <div style="font-size:11px;margin-top:5px;">Retour facile</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:20px;text-align:center;">
+                        <div style="font-size:2rem;">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div style="font-size:11px;margin-top:5px;">Support 24/7</div>
+                    </div>
+                </div>
+            </div>
+                    </div>
+                </div>
+            </div>
+
+    <div class="container pb-5">
+
+    <!-- CATÉGORIES -->
+    <div class="mb-4">
+        <div class="section-title">Acheter par catégorie</div>
+        <div class="row g-3">
+            {% for cat in categories %}
+            <!-- <div class="col-6 col-md-3 col-lg-2">
+                <a href="{% url 'liste_produits' %}?categorie={{ cat.id }}" class="text-decoration-none">
+                    <div style="background:white;border:1px solid #ddd;border-radius:4px;padding:20px 10px;text-align:center;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 15px rgba(0,0,0,0.12)'" onmouseout="this.style.boxShadow='none'">
+                        <div style="font-size:2rem;margin-bottom:8px;">🏷️</div>
+                        <div style="font-size:13px;font-weight:600;color:#111;">{{ cat.nom }}</div>
+                    </div>
+                </a>
+            </div> -->
+            <div class="col-6 col-md-3 col-lg-2">
+                <a href="{% url 'liste_produits' %}?categorie={{ cat.id }}" class="text-decoration-none">
+                    <div style="background:white;border:1px solid #ddd;border-radius:4px;padding:20px 10px;text-align:center;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 15px rgba(0,0,0,0.12)'" onmouseout="this.style.boxShadow='none'">
+                        <div style="font-size:2rem;margin-bottom:8px; color:#febd69;">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div style="font-size:13px;font-weight:600;color:#111;">{{ cat.nom }}</div>
+                    </div>
+                </a>
+            </div>
+
+            {% empty %}
+            <p class="text-muted">Aucune catégorie disponible.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- NOUVEAUX PRODUITS -->
+    <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="section-title mb-0">Nouveaux produits</div>
+            <a href="{% url 'liste_produits' %}" style="color:#007185;font-size:13px;text-decoration:none;">Voir tout <i class="fa fa-chevron-right ms-1" style="font-size:11px;"></i></a>
+        </div>
+        <div class="row g-3">
+            {% for produit in produits_recents %}
+            <div class="col-6 col-md-3">
+                <div class="product-card">
+                    <a href="{% url 'detail_produit' produit.id %}" class="text-decoration-none">
+                        {% if produit.image %}
+                        <img src="{{ produit.image.url }}" alt="{{ produit.nom }}">
+                        {% else %}
+                        <div style="height:200px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
+                            <i class="fa fa-image fa-3x" style="color:#ddd;"></i>
+                        </div>
+                        {% endif %}
+                        <div style="font-size:11px;color:#007185;margin-bottom:4px;">{{ produit.categorie.nom }}</div>
+                        <div style="font-size:14px;color:#111;font-weight:500;margin-bottom:6px;line-height:1.4;">{{ produit.nom }}</div>
+                        <div class="stars mb-1">★★★★☆ <span style="color:#555;font-size:11px;">({{ produit.id }})</span></div>
+                    </a>
+                    <div class="price">{{ produit.prix }} <small>DH</small></div>
+                    <div style="font-size:11px;color:#007600;margin-bottom:8px;">
+                        <i class="fa fa-check me-1"></i>En stock
+                    </div>
+                    <a href="{% url 'ajouter_panier' produit.id %}" class="btn-add-cart btn text-decoration-none" style="font-size:13px;">
+                        <i class="fa fa-cart-plus me-1"></i>Ajouter au panier
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">Aucun produit disponible.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+
+    <div class="mb-5">
+        <div class="section-title text-center mb-3" style="font-size:24px;">
+            Nos Services
+        </div>
+        <div class="d-flex justify-content-center flex-wrap gap-4 my-5">
+            <!-- Service 2: Support Client (Sans authentification) -->
+            <div class="col-md-3 col-sm-6">
+                <div class="service-card" style="background:white;border:1px solid #e8ecf1;border-radius:12px;padding:25px 20px;text-align:center;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);height:100%;position:relative;overflow:hidden;" 
+                     onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 12px 40px rgba(0,0,0,0.08)';this.style.borderColor='#28a745';" 
+                     onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';this.style.borderColor='#e8ecf1';">
+                    
+                    <div style="position:absolute;top:12px;right:12px;background:#28a745;color:white;font-size:9px;font-weight:700;padding:2px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.5px;">
+                        24/7
+                    </div>
+                    
+                    <div style="width:60px;height:60px;background:linear-gradient(135deg,#28a745,#20c997);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:26px;color:white;">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h6 style="font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">Support Client</h6>
+                    <p style="font-size:13px;color:#6c757d;line-height:1.5;margin-bottom:15px;">
+                        Assistance par email ou téléphone. Nous sommes là pour vous aider.
+                    </p>
+                    
+                    <!-- Support accessible sans authentification -->
+                    <a href="{% url 'support' %}" style="display:inline-block;background:#28a745;color:white;padding:6px 20px;border-radius:20px;font-size:12px;font-weight:600;text-decoration:none;transition:all 0.3s ease;" 
+                       onmouseover="this.style.backgroundColor='#218838';this.style.transform='scale(1.05)';" 
+                       onmouseout="this.style.backgroundColor='#28a745';this.style.transform='scale(1)';">
+                        <i class="fas fa-envelope me-1"></i>Contacter
+                    </a>
+                </div>
+            </div>
+
+            <!-- Service 3: Service Après-Vente (SAV) -->
+            <div class="col-md-3 col-sm-6">
+                <div class="service-card" style="background:white;border:1px solid #e8ecf1;border-radius:12px;padding:25px 20px;text-align:center;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);height:100%;position:relative;overflow:hidden;" 
+                     onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 12px 40px rgba(0,0,0,0.08)';this.style.borderColor='#17a2b8';" 
+                     onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';this.style.borderColor='#e8ecf1';">
+                    
+                    <div style="position:absolute;top:12px;right:12px;background:#17a2b8;color:white;font-size:9px;font-weight:700;padding:2px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.5px;">
+                        Garantie
+                    </div>
+                    
+                    <div style="width:60px;height:60px;background:linear-gradient(135deg,#17a2b8,#0dcaf0);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:26px;color:white;">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h6 style="font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">Service Après-Vente</h6>
+                    <p style="font-size:13px;color:#6c757d;line-height:1.5;margin-bottom:15px;">
+                        Retours, échanges et garantie de vos produits en toute simplicité.
+                    </p>
+                    
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'sav' %}" style="display:inline-block;background:#17a2b8;color:white;padding:6px 20px;border-radius:20px;font-size:12px;font-weight:600;text-decoration:none;transition:all 0.3s ease;" 
+                           onmouseover="this.style.backgroundColor='#138496';this.style.transform='scale(1.05)';" 
+                           onmouseout="this.style.backgroundColor='#17a2b8';this.style.transform='scale(1)';">
+                            <i class="fas fa-exchange-alt me-1"></i>Gérer
+                        </a>
+                    {% else %}
+                        <a href="{% url 'connexion' %}" style="display:inline-block;background:#6c757d;color:white;padding:6px 20px;border-radius:20px;font-size:12px;font-weight:600;text-decoration:none;transition:all 0.3s ease;" 
+                           onmouseover="this.style.backgroundColor='#5a6268';" 
+                           onmouseout="this.style.backgroundColor='#6c757d';">
+                            <i class="fas fa-lock me-1"></i>Connectez-vous
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Service 4: Réclamation -->
+            <div class="col-md-3 col-sm-6">
+                <div class="service-card" style="background:white;border:1px solid #e8ecf1;border-radius:12px;padding:25px 20px;text-align:center;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);height:100%;position:relative;overflow:hidden;" 
+                     onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 12px 40px rgba(0,0,0,0.08)';this.style.borderColor='#dc3545';" 
+                     onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';this.style.borderColor='#e8ecf1';">
+                    
+                    <div style="position:absolute;top:12px;right:12px;background:#dc3545;color:white;font-size:9px;font-weight:700;padding:2px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.5px;">
+                        Prioritaire
+                    </div>
+                    
+                    <div style="width:60px;height:60px;background:linear-gradient(135deg,#dc3545,#f5576c);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:26px;color:white;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h6 style="font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">Service Réclamation</h6>
+                    <p style="font-size:13px;color:#6c757d;line-height:1.5;margin-bottom:15px;">
+                        Déposez votre réclamation et suivez son traitement en ligne.
+                    </p>
+                    
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'creer_reclamation' %}" style="display:inline-block;background:#dc3545;color:white;padding:6px 20px;border-radius:20px;font-size:12px;font-weight:600;text-decoration:none;transition:all 0.3s ease;" 
+                           onmouseover="this.style.backgroundColor='#c82333';this.style.transform='scale(1.05)';" 
+                           onmouseout="this.style.backgroundColor='#dc3545';this.style.transform='scale(1)';">
+                            <i class="fas fa-paper-plane me-1"></i>Réclamer
+                        </a>
+                    {% else %}
+                        <a href="{% url 'connexion' %}" style="display:inline-block;background:#6c757d;color:white;padding:6px 20px;border-radius:20px;font-size:12px;font-weight:600;text-decoration:none;transition:all 0.3s ease;" 
+                           onmouseover="this.style.backgroundColor='#5a6268';" 
+                           onmouseout="this.style.backgroundColor='#6c757d';">
+                            <i class="fas fa-lock me-1"></i>Connectez-vous
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- BANNIÈRE PROMO -->
+    <div style="background:linear-gradient(135deg,#232f3e,#37475a);border-radius:8px;padding:30px;color:white;text-align:center;margin-bottom:30px;">
+        <h3 style="font-weight:800;margin-bottom:8px;">Livraison gratuite</h3>
+        <p style="color:#ccc;margin-bottom:15px;font-size:14px;">Sur toutes les commandes supérieures à 299 DH</p>
+        <a href="{% url 'liste_produits' %}" class="btn-amazon-primary btn text-decoration-none">
+            <i class="fa fa-bolt me-2"></i>Profiter maintenant
+        </a>
+    </div>
+
+</div>
+
+<style>
+    /* Style des cartes de service */
+    .service-card {
+        background: white;
+        border: 1px solid #e8ecf1;
+        border-radius: 12px;
+        padding: 25px 20px;
+        text-align: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .service-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+    
+    .service-card:hover::before {
+        transform: scaleX(1);
+    }
+    
+    .service-card .icon-wrapper {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        font-size: 26px;
+        color: white;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .service-card {
+            padding: 20px 15px;
+        }
+        .service-card .icon-wrapper {
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+        }
+        .service-card h6 {
+            font-size: 14px;
+        }
+        .service-card p {
+            font-size: 12px;
+        }
+    }
+</style>
+{% endblock %}

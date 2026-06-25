@@ -1,0 +1,29 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<div style="min-height:80vh;display:flex;align-items:center;padding:40px 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <div style="width:60px;height:60px;background:#28a745;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;">
+                            <i class="fa fa-check" style="color:white;font-size:1.4rem;"></i>
+                        </div>
+                        <h3 style="font-weight:800;color:#1a1a2e;">Email envoyé !</h3>
+                        <p class="text-muted">Nous avons envoyé un lien de réinitialisation à votre adresse email.</p>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="fa fa-info-circle me-2"></i>
+                        Si vous ne voyez pas l'email dans votre boîte de réception, vérifiez vos spams.
+                    </div>
+                    <p class="text-center mt-4">
+                        <a href="{% url 'connexion' %}" class="btn btn-accent" style="border-radius:10px;font-weight:700;">
+                            <i class="fa fa-arrow-left me-2"></i>Retour à la connexion
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

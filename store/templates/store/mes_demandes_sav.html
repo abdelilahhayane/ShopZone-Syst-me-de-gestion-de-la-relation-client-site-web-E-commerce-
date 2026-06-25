@@ -1,0 +1,263 @@
+<!-- store/templates/store/mes_demandes_sav.html -->
+{% extends 'store/base.html' %}
+{% block content %}
+<div class="container py-4">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="font-size:13px;">
+            <li class="breadcrumb-item"><a href="{% url 'accueil' %}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'profil' %}">Mon profil</a></li>
+            <li class="breadcrumb-item active">Mes demandes SAV</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <div class="col-lg-12">
+
+            <!-- Messages -->
+            <!-- {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="border-radius:12px;">
+                        <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-circle{% endif %} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %} -->
+
+            <!-- Statistiques -->
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:25px;">
+                <div style="background:white;border:1px solid #e8ecf1;border-radius:10px;padding:15px;text-align:center;transition:all 0.3s ease;" 
+                     onmouseover="this.style.boxShadow='0 4px 15px rgba(0,0,0,0.05)';" 
+                     onmouseout="this.style.boxShadow='none';">
+                    <div style="font-size:22px;font-weight:700;color:#1a1a2e;">{{ stats.total }}</div>
+                    <div style="font-size:11px;color:#6c757d;font-weight:500;">Total</div>
+                </div>
+                <div style="background:white;border:1px solid #ffc107;border-radius:10px;padding:15px;text-align:center;transition:all 0.3s ease;" 
+                     onmouseover="this.style.boxShadow='0 4px 15px rgba(255,193,7,0.15)';" 
+                     onmouseout="this.style.boxShadow='none';">
+                    <div style="font-size:22px;font-weight:700;color:#ffc107;">{{ stats.en_attente }}</div>
+                    <div style="font-size:11px;color:#6c757d;font-weight:500;">En attente</div>
+                </div>
+                <div style="background:white;border:1px solid #17a2b8;border-radius:10px;padding:15px;text-align:center;transition:all 0.3s ease;" 
+                     onmouseover="this.style.boxShadow='0 4px 15px rgba(23,162,184,0.15)';" 
+                     onmouseout="this.style.boxShadow='none';">
+                    <div style="font-size:22px;font-weight:700;color:#17a2b8;">{{ stats.en_cours }}</div>
+                    <div style="font-size:11px;color:#6c757d;font-weight:500;">En cours</div>
+                </div>
+                <div style="background:white;border:1px solid #28a745;border-radius:10px;padding:15px;text-align:center;transition:all 0.3s ease;" 
+                     onmouseover="this.style.boxShadow='0 4px 15px rgba(40,167,69,0.15)';" 
+                     onmouseout="this.style.boxShadow='none';">
+                    <div style="font-size:22px;font-weight:700;color:#28a745;">{{ stats.terminees }}</div>
+                    <div style="font-size:11px;color:#6c757d;font-weight:500;">Terminées</div>
+                </div>
+                <div style="background:white;border:1px solid #dc3545;border-radius:10px;padding:15px;text-align:center;transition:all 0.3s ease;" 
+                     onmouseover="this.style.boxShadow='0 4px 15px rgba(220,53,69,0.15)';" 
+                     onmouseout="this.style.boxShadow='none';">
+                    <div style="font-size:22px;font-weight:700;color:#dc3545;">{{ stats.rejetees }}</div>
+                    <div style="font-size:11px;color:#6c757d;font-weight:500;">Rejetées</div>
+                </div>
+            </div>
+
+            <!-- Liste des demandes -->
+            <div style="background:white;border:1px solid #e8ecf1;border-radius:12px;padding:25px;box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+                
+                <!-- En-tête -->
+                <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #17a2b8;padding-bottom:15px;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+                    <h5 style="font-size:16px;font-weight:700;margin:0;color:#1a1a2e;">
+                        <i class="fas fa-list me-2" style="color:#17a2b8;"></i>
+                        Mes demandes SAV
+                    </h5>
+                    <a href="{% url 'sav' %}" 
+                       style="background:linear-gradient(135deg,#17a2b8,#0dcaf0);color:white;padding:8px 20px;border-radius:20px;font-size:13px;text-decoration:none;font-weight:600;transition:all 0.3s ease;"
+                       onmouseover="this.style.transform='scale(1.05)';this.style.boxShadow='0 4px 15px rgba(23,162,184,0.3)';" 
+                       onmouseout="this.style.transform='scale(1)';this.style.boxShadow='none';">
+                        <i class="fas fa-plus me-1"></i>Nouvelle demande
+                    </a>
+                </div>
+
+                <!-- Tableau -->
+                {% if demandes %}
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                            <thead>
+                                <tr style="background:#f8f9fa;border-bottom:2px solid #e8ecf1;">
+                                    <th style="padding:12px 10px;text-align:left;font-weight:600;color:#1a1a2e;">#</th>
+                                    <th style="padding:12px 10px;text-align:left;font-weight:600;color:#1a1a2e;">Type</th>
+                                    <th style="padding:12px 10px;text-align:left;font-weight:600;color:#1a1a2e;">Date</th>
+                                    <th style="padding:12px 10px;text-align:left;font-weight:600;color:#1a1a2e;">Commande</th>
+                                    <th style="padding:12px 10px;text-align:left;font-weight:600;color:#1a1a2e;">Statut</th>
+                                    <th style="padding:12px 10px;text-align:center;font-weight:600;color:#1a1a2e;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for demande in demandes %}
+                                    <tr style="border-bottom:1px solid #f0f0f0;transition:background 0.2s ease;" 
+                                        onmouseover="this.style.backgroundColor='#f8f9fa';" 
+                                        onmouseout="this.style.backgroundColor='transparent';">
+                                        <td style="padding:12px 10px;font-weight:600;color:#1a1a2e;">#{{ demande.id }}</td>
+                                        <td style="padding:12px 10px;">
+                                            <span style="background:#f0f0f0;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:500;color:#1a1a2e;">
+                                                {{ demande.get_type_demande_display }}
+                                            </span>
+                                        </td>
+                                        <td style="padding:12px 10px;color:#6c757d;font-size:12px;">
+                                            {{ demande.date_creation|date:"d/m/Y" }}
+                                        </td>
+                                        <td style="padding:12px 10px;">
+                                            {% if demande.numero_commande %}
+                                                <span style="background:#f8f9fa;padding:3px 10px;border-radius:4px;font-size:12px;color:#1a1a2e;border:1px solid #e8ecf1;">
+                                                    {{ demande.numero_commande }}
+                                                </span>
+                                            {% else %}
+                                                <span style="color:#6c757d;font-size:12px;">-</span>
+                                            {% endif %}
+                                        </td>
+                                        <td style="padding:12px 10px;">
+                                            {% if demande.statut == 'en_attente' %}
+                                                <span style="background:#fff8e1;color:#f59e0b;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;">
+                                                    ⏳ {{ demande.get_statut_display }}
+                                                </span>
+                                            {% elif demande.statut == 'validee' %}
+                                                <span style="background:#e3f2fd;color:#1976d2;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;">
+                                                    ✅ {{ demande.get_statut_display }}
+                                                </span>
+                                            {% elif demande.statut == 'en_cours' or demande.statut == 'expediee' %}
+                                                <span style="background:#e8eaf6;color:#3949ab;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;">
+                                                    🔧 {{ demande.get_statut_display }}
+                                                </span>
+                                            {% elif demande.statut == 'terminee' %}
+                                                <span style="background:#e8f5e9;color:#28a745;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;">
+                                                    ✅ {{ demande.get_statut_display }}
+                                                </span>
+                                            {% elif demande.statut == 'rejetee' %}
+                                                <span style="background:#ffebee;color:#dc3545;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;">
+                                                    ❌ {{ demande.get_statut_display }}
+                                                </span>
+                                            {% else %}
+                                                <span style="background:#f5f5f5;color:#6c757d;padding:4px 14px;border-radius:20px;font-size:11px;">
+                                                    {{ demande.get_statut_display }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td style="padding:12px 10px;text-align:center;">
+                                            <a href="{% url 'detail_demande_sav' demande.id %}" 
+                                               style="color:#17a2b8;text-decoration:none;font-size:12px;font-weight:600;padding:4px 12px;border-radius:4px;transition:all 0.3s ease;"
+                                               onmouseover="this.style.backgroundColor='#e3f2fd';" 
+                                               onmouseout="this.style.backgroundColor='transparent';">
+                                                <i class="fas fa-eye"></i> Voir
+                                            </a>
+                                            {% if demande.statut == 'en_attente' %}
+                                                <span style="color:#ddd;margin:0 4px;">|</span>
+                                                <a href="{% url 'annuler_demande_sav' demande.id %}" 
+                                                   style="color:#dc3545;text-decoration:none;font-size:12px;padding:4px 12px;border-radius:4px;transition:all 0.3s ease;" 
+                                                   onclick="return confirm('Êtes-vous sûr de vouloir annuler cette demande ?')"
+                                                   onmouseover="this.style.backgroundColor='#ffebee';" 
+                                                   onmouseout="this.style.backgroundColor='transparent';">
+                                                    <i class="fas fa-times"></i> Annuler
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    {% if demandes.has_other_pages %}
+                        <nav style="margin-top:25px;">
+                            <ul style="display:flex;justify-content:center;list-style:none;gap:5px;padding:0;">
+                                {% if demandes.has_previous %}
+                                    <li>
+                                        <a href="?page={{ demandes.previous_page_number }}" 
+                                           style="padding:8px 14px;border:1px solid #e8ecf1;border-radius:6px;color:#17a2b8;text-decoration:none;transition:all 0.3s ease;"
+                                           onmouseover="this.style.backgroundColor='#e3f2fd';" 
+                                           onmouseout="this.style.backgroundColor='transparent';">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                
+                                {% for num in demandes.paginator.page_range %}
+                                    {% if demandes.number == num %}
+                                        <li>
+                                            <span style="padding:8px 14px;background:#17a2b8;color:white;border-radius:6px;font-weight:600;">{{ num }}</span>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <a href="?page={{ num }}" 
+                                               style="padding:8px 14px;border:1px solid #e8ecf1;border-radius:6px;color:#1a1a2e;text-decoration:none;transition:all 0.3s ease;"
+                                               onmouseover="this.style.backgroundColor='#f8f9fa';" 
+                                               onmouseout="this.style.backgroundColor='transparent';">
+                                                {{ num }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if demandes.has_next %}
+                                    <li>
+                                        <a href="?page={{ demandes.next_page_number }}" 
+                                           style="padding:8px 14px;border:1px solid #e8ecf1;border-radius:6px;color:#17a2b8;text-decoration:none;transition:all 0.3s ease;"
+                                           onmouseover="this.style.backgroundColor='#e3f2fd';" 
+                                           onmouseout="this.style.backgroundColor='transparent';">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                    
+                {% else %}
+                    <!-- Aucune demande -->
+                    <div style="text-align:center;padding:60px 20px;">
+                        <div style="font-size:4rem;color:#ddd;margin-bottom:20px;">
+                            <i class="fas fa-inbox"></i>
+                        </div>
+                        <h5 style="color:#1a1a2e;margin-bottom:8px;">Aucune demande SAV</h5>
+                        <p style="color:#6c757d;font-size:14px;margin-bottom:20px;">
+                            Vous n'avez pas encore de demandes SAV.
+                        </p>
+                        <a href="{% url 'sav' %}" 
+                           style="background:linear-gradient(135deg,#17a2b8,#0dcaf0);color:white;border:none;border-radius:10px;padding:12px 30px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block;transition:all 0.3s ease;"
+                           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(23,162,184,0.3)';" 
+                           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';">
+                            <i class="fas fa-plus me-2"></i>Créer une demande SAV
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Responsive */
+    @media (max-width: 768px) {
+        .stats-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        .breadcrumb {
+            font-size: 12px !important;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+        .container {
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<div class="container py-3">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'accueil' %}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'liste_produits' %}">Produits</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'liste_produits' %}?categorie={{ produit.categorie.id }}">{{ produit.categorie.nom }}</a></li>
+            <li class="breadcrumb-item active">{{ produit.nom }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+
+        <!-- IMAGE -->
+        <div class="col-md-5">
+            <div style="background:white;border:1px solid #ddd;border-radius:4px;padding:20px;text-align:center;">
+                {% if produit.image %}
+                <img src="{{ produit.image.url }}" style="max-width:100%;max-height:400px;object-fit:contain;" alt="{{ produit.nom }}">
+                {% else %}
+                <div style="height:350px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;">
+                    <i class="fa fa-image fa-5x" style="color:#ddd;"></i>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- INFOS -->
+        <div class="col-md-4">
+            <div style="font-size:13px;color:#007185;margin-bottom:6px;">{{ produit.categorie.nom }}</div>
+            <h1 style="font-size:1.5rem;font-weight:400;color:#111;margin-bottom:10px;line-height:1.4;">{{ produit.nom }}</h1>
+            <div class="stars mb-1">★★★★☆ <span style="color:#007185;font-size:13px;">4.0 sur 5</span></div>
+            <hr style="border-color:#ddd;">
+            <div class="price" style="font-size:1.8rem;margin-bottom:10px;">{{ produit.prix }} <small>DH</small></div>
+            <div style="background:#fff8e7;border:1px solid #f5c518;border-radius:4px;padding:8px 12px;font-size:13px;margin-bottom:15px;">
+                <i class="fa fa-bolt me-1" style="color:#f5c518;"></i>
+                <strong>Commandez maintenant</strong> — Livraison rapide disponible
+            </div>
+            <hr style="border-color:#ddd;">
+            <div style="font-size:14px;color:#444;line-height:1.7;">
+                <strong>Description :</strong><br>{{ produit.description }}
+            </div>
+        </div>
+
+        <!-- ACHAT -->
+        <div class="col-md-3">
+            <div style="background:white;border:1px solid #ddd;border-radius:8px;padding:20px;">
+                <div class="price" style="font-size:1.5rem;margin-bottom:8px;">{{ produit.prix }} DH</div>
+                <div style="font-size:13px;margin-bottom:12px;color:{% if produit.quantite_stock > 0 %}#007600{% else %}#c7511f{% endif %}">
+                    {% if produit.quantite_stock > 0 %}
+                    <strong>En stock</strong> ({{ produit.quantite_stock }} disponibles)
+                    {% else %}
+                    <strong>Rupture de stock</strong>
+                    {% endif %}
+                </div>
+                {% if produit.quantite_stock > 0 %}
+                <a href="{% url 'ajouter_panier' produit.id %}" class="btn-add-cart btn text-decoration-none mb-2 d-block text-center">
+                    <i class="fa fa-cart-plus me-1"></i>Ajouter au panier
+                </a>
+                <a href="{% url 'ajouter_panier' produit.id %}?checkout=true" class="btn-amazon-primary btn text-decoration-none d-block text-center">
+                    <i class="fa fa-bolt me-1"></i>Commander maintenant
+                </a>
+                {% endif %}
+                <hr style="border-color:#eee;">
+                <div style="font-size:12px;color:#555;">
+                    <div class="mb-1"><i class="fa fa-truck me-2" style="color:#007600;"></i>Livraison gratuite dès 299 DH</div>
+                    <div class="mb-1"><i class="fa fa-undo me-2" style="color:#007600;"></i>Retour sous 30 jours</div>
+                    <div><i class="fa fa-shield-alt me-2" style="color:#007600;"></i>Paiement 100% sécurisé</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUITS SIMILAIRES -->
+    {% if produits_similaires %}
+    <div class="mt-5">
+        <div class="section-title">Produits similaires</div>
+        <div class="row g-3">
+            {% for p in produits_similaires %}
+            <div class="col-6 col-md-3">
+                <div class="product-card">
+                    <a href="{% url 'detail_produit' p.id %}" class="text-decoration-none">
+                        {% if p.image %}
+                        <img src="{{ p.image.url }}" alt="{{ p.nom }}">
+                        {% else %}
+                        <div style="height:200px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
+                            <i class="fa fa-image fa-3x" style="color:#ddd;"></i>
+                        </div>
+                        {% endif %}
+                        <div style="font-size:14px;color:#111;font-weight:500;margin-bottom:6px;">{{ p.nom }}</div>
+                    </a>
+                    <div class="price">{{ p.prix }} <small>DH</small></div>
+                    <a href="{% url 'ajouter_panier' p.id %}" class="btn-add-cart btn text-decoration-none mt-2" style="font-size:12px;">
+                        <i class="fa fa-cart-plus me-1"></i>Ajouter
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

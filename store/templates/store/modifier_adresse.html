@@ -1,0 +1,86 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Modifier l'adresse - ShopZone{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>Modifier l'adresse
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="nom_complet" class="form-label">Nom complet *</label>
+                            <input type="text" class="form-control" id="nom_complet" name="nom_complet" value="{{ adresse.nom_complet }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="rue" class="form-label">Rue *</label>
+                            <input type="text" class="form-control" id="rue" name="rue" value="{{ adresse.rue }}" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="code_postal" class="form-label">Code postal *</label>
+                                <input type="text" class="form-control" id="code_postal" name="code_postal" value="{{ adresse.code_postal }}" required>
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label for="ville" class="form-label">Ville *</label>
+                                <input type="text" class="form-control" id="ville" name="ville" value="{{ adresse.ville }}" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="pays" class="form-label">Pays</label>
+                            <select class="form-select" id="pays" name="pays">
+                                <option value="France" {% if adresse.pays == 'France' %}selected{% endif %}>France</option>
+                                <option value="Belgique" {% if adresse.pays == 'Belgique' %}selected{% endif %}>Belgique</option>
+                                <option value="Suisse" {% if adresse.pays == 'Suisse' %}selected{% endif %}>Suisse</option>
+                                <option value="Canada" {% if adresse.pays == 'Canada' %}selected{% endif %}>Canada</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="telephone" class="form-label">Téléphone *</label>
+                            <input type="tel" class="form-control" id="telephone" name="telephone" value="{{ adresse.telephone }}" required>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="est_defaut" name="est_defaut" {% if adresse.est_defaut %}checked{% endif %}>
+                            <label class="form-check-label" for="est_defaut">
+                                Définir comme adresse par défaut
+                            </label>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-save me-2"></i>Mettre à jour
+                            </button>
+                            <a href="{% url 'mes_adresses' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Annuler
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<div class="container py-4">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="font-size:13px;">
+            <li class="breadcrumb-item"><a href="{% url 'accueil' %}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'mes_commandes' %}">Mes commandes</a></li>
+            <li class="breadcrumb-item active">Commande #{{ commande.id }}</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:4px;">
+                <i class="fa fa-box me-2" style="color:#febd69;"></i>Commande #{{ commande.id }}
+            </h2>
+            <small style="color:#888;font-size:13px;">Passée le {{ commande.date_commande|date:"d/m/Y à H:i" }}</small>
+        </div>
+        <a href="{% url 'mes_commandes' %}" class="btn-amazon btn" style="font-size:13px;">
+            <i class="fa fa-arrow-left me-1"></i>Retour
+        </a>
+    </div>
+
+    <!-- SUIVI VISUEL -->
+    {% if commande.statut != 'annulee' %}
+    <div style="background:white;border:1px solid #ddd;border-radius:4px;padding:25px;margin-bottom:20px;">
+        <h5 style="font-size:15px;font-weight:700;margin-bottom:20px;border-bottom:2px solid #febd69;padding-bottom:10px;">
+            <i class="fa fa-map-marker-alt me-2" style="color:#febd69;"></i>Suivi de votre commande
+        </h5>
+        <div style="position:relative;display:flex;justify-content:space-between;align-items:flex-start;padding:0 5%;">
+
+            <!-- Ligne de fond -->
+            <div style="position:absolute;top:20px;left:10%;right:10%;height:4px;background:#e0e0e0;z-index:0;"></div>
+
+            <!-- Ligne progression -->
+            <div style="position:absolute;top:20px;left:10%;height:4px;background:#febd69;z-index:1;
+                width:{% if commande.statut == 'en_attente' %}0%{% elif commande.statut == 'confirmee' %}45%{% elif commande.statut == 'en_preparation' %}90%{% else %}0%{% endif %};
+                transition:width 0.5s;"></div>
+
+            {% for etape, label, icon in statuts_etapes %}
+            <div style="text-align:center;position:relative;z-index:2;">
+                <div style="width:42px;height:42px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:1rem;
+                    {% if etape == commande.statut %}
+                        background:#232f3e;color:#febd69;border:3px solid #febd69;
+                    {% elif commande.statut == 'en_preparation' and etape != 'en_preparation' %}
+                        background:#febd69;color:#111;border:3px solid #febd69;
+                    {% elif commande.statut == 'confirmee' and etape == 'en_attente' %}
+                        background:#febd69;color:#111;border:3px solid #febd69;
+                    {% else %}
+                        background:white;color:#ccc;border:3px solid #e0e0e0;
+                    {% endif %}">
+                    <i class="fa {{ icon }}"></i>
+                </div>
+                <small style="font-size:12px;font-weight:600;color:
+                    {% if etape == commande.statut %}#232f3e{% else %}#aaa{% endif %};">{{ label }}</small>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    {% else %}
+    <div style="background:#ffebee;border:1px solid #ffcdd2;border-radius:4px;padding:15px 20px;margin-bottom:20px;font-size:14px;color:#c62828;">
+        <i class="fa fa-times-circle me-2"></i><strong>Cette commande a été annulée.</strong>
+    </div>
+    {% endif %}
+
+    <div class="row g-4">
+
+        <!-- PRODUITS -->
+        <div class="col-md-8">
+            <div style="background:white;border:1px solid #ddd;border-radius:4px;padding:20px;">
+                <h5 style="font-size:15px;font-weight:700;border-bottom:1px solid #eee;padding-bottom:10px;margin-bottom:15px;">
+                    <i class="fa fa-shopping-bag me-2" style="color:#febd69;"></i>Articles commandés
+                </h5>
+
+                {% for ligne in commande.lignes.all %}
+                <div style="display:flex;gap:15px;padding:12px 0;{% if not forloop.last %}border-bottom:1px solid #f5f5f5;{% endif %}align-items:center;">
+                    {% if ligne.produit.image %}
+                    <img src="{{ ligne.produit.image.url }}" style="width:65px;height:65px;object-fit:contain;border:1px solid #eee;border-radius:4px;flex-shrink:0;" alt="{{ ligne.produit.nom }}">
+                    {% else %}
+                    <div style="width:65px;height:65px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;border-radius:4px;flex-shrink:0;">
+                        <i class="fa fa-image" style="color:#ddd;"></i>
+                    </div>
+                    {% endif %}
+                    <div style="flex:1;">
+                        <div style="font-size:14px;font-weight:500;color:#111;margin-bottom:3px;">{{ ligne.produit.nom }}</div>
+                        <div style="font-size:13px;color:#888;">Quantité : {{ ligne.quantite }} × {{ ligne.prix_unitaire }} DH</div>
+                    </div>
+                    <div class="price" style="font-size:1rem;white-space:nowrap;">
+                        {{ ligne.quantite|floatformat:0 }} × {{ ligne.prix_unitaire }} = 
+                        {% widthratio ligne.quantite 1 ligne.prix_unitaire %} DH
+                    </div>
+                </div>
+                {% empty %}
+                <p style="color:#888;font-size:13px;">Aucun article dans cette commande.</p>
+                {% endfor %}
+
+                <div style="border-top:2px solid #eee;margin-top:15px;padding-top:15px;text-align:right;">
+                    <span style="font-size:16px;font-weight:600;">Total de la commande : </span>
+                    <span class="price" style="font-size:1.3rem;">{{ commande.montant_total }} DH</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- INFOS COMMANDE -->
+        <div class="col-md-4">
+            <div style="background:white;border:1px solid #ddd;border-radius:4px;padding:20px;margin-bottom:15px;">
+                <h5 style="font-size:15px;font-weight:700;border-bottom:1px solid #eee;padding-bottom:10px;margin-bottom:15px;">
+                    <i class="fa fa-info-circle me-2" style="color:#febd69;"></i>Informations
+                </h5>
+                <table style="width:100%;font-size:13px;border-collapse:collapse;">
+                    <tr style="border-bottom:1px solid #f5f5f5;">
+                        <td style="padding:8px 0;color:#888;">N° commande</td>
+                        <td style="padding:8px 0;font-weight:600;text-align:right;color:#007185;">#{{ commande.id }}</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #f5f5f5;">
+                        <td style="padding:8px 0;color:#888;">Client</td>
+                        <td style="padding:8px 0;font-weight:600;text-align:right;">{{ commande.utilisateur.first_name }} {{ commande.utilisateur.last_name }}</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #f5f5f5;">
+                        <td style="padding:8px 0;color:#888;">Email</td>
+                        <td style="padding:8px 0;font-weight:600;text-align:right;font-size:12px;">{{ commande.utilisateur.email }}</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid #f5f5f5;">
+                        <td style="padding:8px 0;color:#888;">Date</td>
+                        <td style="padding:8px 0;font-weight:600;text-align:right;">{{ commande.date_commande|date:"d/m/Y" }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:8px 0;color:#888;">Statut</td>
+                        <td style="padding:8px 0;text-align:right;">
+                            {% if commande.statut == 'en_attente' %}
+                                <span style="background:#fff8e7;color:#f59e0b;padding:3px 8px;border-radius:3px;font-size:12px;font-weight:600;">⏳ En attente</span>
+                            {% elif commande.statut == 'confirmee' %}
+                                <span style="background:#e8f5e9;color:#2e7d32;padding:3px 8px;border-radius:3px;font-size:12px;font-weight:600;">✅ Confirmée</span>
+                            {% elif commande.statut == 'en_preparation' %}
+                                <span style="background:#e3f2fd;color:#1565c0;padding:3px 8px;border-radius:3px;font-size:12px;font-weight:600;">🔧 En préparation</span>
+                            {% elif commande.statut == 'annulee' %}
+                                <span style="background:#ffebee;color:#c62828;padding:3px 8px;border-radius:3px;font-size:12px;font-weight:600;">❌ Annulée</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            {% if commande.statut == 'en_attente' %}
+            <a href="{% url 'annuler_commande' commande.id %}" 
+               class="btn btn-outline-danger btn-sm d-block text-center mb-3"
+               onclick="return confirm('Êtes-vous sûr de vouloir annuler cette commande ?')">
+                <i class="fa fa-times me-2"></i>Annuler la commande
+            </a>
+            {% endif %}
+
+            <a href="{% url 'accueil' %}" class="btn-amazon-primary btn text-decoration-none d-block text-center" style="font-size:13px;">
+                <i class="fa fa-shopping-bag me-2"></i>Continuer mes achats
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

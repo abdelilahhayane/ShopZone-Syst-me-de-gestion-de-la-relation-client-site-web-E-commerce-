@@ -1,0 +1,97 @@
+<!-- store/templates/store/mes_reclamations.html -->
+{% extends 'store/base.html' %}
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="font-size:13px;">
+            <li class="breadcrumb-item"><a href="{% url 'accueil' %}">Accueil</a></li>
+            <li class="breadcrumb-item active">Mes réclamations</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-12">
+            <div style="background:white;border:1px solid #ddd;border-radius:4px;padding:25px;">
+                <h5 style="font-size:16px;font-weight:700;border-bottom:2px solid #febd69;padding-bottom:10px;margin-bottom:20px;">
+                    <i class="fa fa-list me-2" style="color:#febd69;"></i>
+                    Mes réclamations
+                </h5>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa fa-check-circle me-2"></i>
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if reclamations %}
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                            <thead>
+                                <tr style="background:#f8f9fa;border-bottom:2px solid #ddd;">
+                                    <th style="padding:10px;text-align:left;">#</th>
+                                    <th style="padding:10px;text-align:left;">Sujet</th>
+                                    <th style="padding:10px;text-align:left;">Date</th>
+                                    <th style="padding:10px;text-align:left;">Statut</th>
+                                    <th style="padding:10px;text-align:center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reclamation in reclamations %}
+                                    <tr style="border-bottom:1px solid #eee;">
+                                        <td style="padding:10px;">{{ forloop.counter }}</td>
+                                        <td style="padding:10px;font-weight:600;">{{ reclamation.sujet }}</td>
+                                        <td style="padding:10px;color:#6c757d;">{{ reclamation.date_creation|date:"d/m/Y H:i" }}</td>
+                                        <td style="padding:10px;">
+                                            <!-- ✅ AFFICHAGE CORRECT DU STATUT -->
+                                            {% if reclamation.statut == 'en_cours' %}
+                                                <span style="background:#ffc107;color:#111;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;">
+                                                    <i class="fa fa-clock me-1"></i>En cours
+                                                </span>
+                                            {% elif reclamation.statut == 'resolue' %}
+                                                <span style="background:#28a745;color:white;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;">
+                                                    <i class="fa fa-check me-1"></i>Résolue
+                                                </span>
+                                            {% elif reclamation.statut == 'rejetee' %}
+                                                <span style="background:#dc3545;color:white;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;">
+                                                    <i class="fa fa-times me-1"></i>Rejetée
+                                                </span>
+                                            {% else %}
+                                                <!-- Fallback si le statut n'est pas reconnu -->
+                                                <span style="background:#6c757d;color:white;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;">
+                                                    {{ reclamation.get_statut_display }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td style="padding:10px;text-align:center;">
+                                            <a href="#" style="color:#007185;text-decoration:none;font-size:12px;">
+                                                <i class="fa fa-eye me-1"></i>Voir
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div style="text-align:center;padding:40px 20px;">
+                        <div style="font-size:3rem;color:#6c757d;margin-bottom:15px;">
+                            <i class="fa fa-inbox"></i>
+                        </div>
+                        <p style="color:#6c757d;font-size:14px;">
+                            Vous n'avez pas encore de réclamations.
+                        </p>
+                        <a href="{% url 'creer_reclamation' %}" 
+                           style="background:#dc3545;color:white;border:none;border-radius:4px;padding:8px 20px;font-size:13px;text-decoration:none;display:inline-block;">
+                            <i class="fa fa-plus me-2"></i>Créer une réclamation
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

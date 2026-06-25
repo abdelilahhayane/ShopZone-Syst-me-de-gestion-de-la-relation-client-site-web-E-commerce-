@@ -1,0 +1,54 @@
+/* Header */
+#header {
+    background: #1a1a2e !important;
+    color: white !important;
+}
+
+#header a:link, #header a:visited {
+    color: #e94560 !important;
+}
+
+#branding h1 a {
+    color: white !important;
+    font-weight: 800 !important;
+}
+
+/* Sidebar */
+#nav-sidebar {
+    background: #16213e !important;
+}
+
+/* Boutons */
+.button, input[type=submit], input[type=button] {
+    background: #e94560 !important;
+    border: none !important;
+    border-radius: 8px !important;
+}
+
+.button:hover {
+    background: #c73652 !important;
+}
+
+/* Tableau */
+#result_list thead th {
+    background: #1a1a2e !important;
+    color: white !important;
+}
+
+#result_list tr:hover td {
+    background: #f8f0f2 !important;
+}
+
+/* Dashboard modules */
+.module h2, .module caption {
+    background: #1a1a2e !important;
+}
+
+/* Links */
+a:link, a:visited {
+    color: #1a1a2e !important;
+}
+
+a:hover {
+    color: #e94560 !important;
+}

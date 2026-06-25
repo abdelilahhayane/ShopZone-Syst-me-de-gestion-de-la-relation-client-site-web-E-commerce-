@@ -1,0 +1,225 @@
+<!-- store/templates/store/support.html -->
+{% extends 'store/base.html' %}
+{% block content %}
+<div class="container py-4">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="font-size:13px;">
+            <li class="breadcrumb-item"><a href="{% url 'accueil' %}">Accueil</a></li>
+            <li class="breadcrumb-item active">Support Client</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius:12px;">
+                        <i class="fas fa-check-circle me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Carte Support -->
+            <div style="background:white;border:1px solid #e8ecf1;border-radius:16px;padding:30px;box-shadow:0 2px 10px rgba(0,0,0,0.04);">
+                
+                <!-- En-tête -->
+                <div style="text-align:center;margin-bottom:30px;">
+                    <div style="width:70px;height:70px;background:linear-gradient(135deg,#28a745,#20c997);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:32px;color:white;">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h2 style="font-size:24px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">
+                        Support Client
+                    </h2>
+                    <p style="color:#6c757d;font-size:14px;">
+                        Notre équipe est disponible 24h/24, 7j/7 pour vous assister.
+                    </p>
+                </div>
+
+                <!-- Informations de contact -->
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin-bottom:30px;">
+                    <div style="background:#f8f9fa;border-radius:10px;padding:15px;text-align:center;">
+                        <div style="font-size:20px;color:#28a745;margin-bottom:5px;">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div style="font-size:12px;font-weight:600;color:#1a1a2e;">Email</div>
+                        <div style="font-size:11px;color:#6c757d;">support@shopzone.com</div>
+                    </div>
+                    <div style="background:#f8f9fa;border-radius:10px;padding:15px;text-align:center;">
+                        <div style="font-size:20px;color:#28a745;margin-bottom:5px;">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div style="font-size:12px;font-weight:600;color:#1a1a2e;">Téléphone</div>
+                        <div style="font-size:11px;color:#6c757d;">+212 550-607080</div>
+                    </div>
+                    <div style="background:#f8f9fa;border-radius:10px;padding:15px;text-align:center;">
+                        <div style="font-size:20px;color:#28a745;margin-bottom:5px;">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div style="font-size:12px;font-weight:600;color:#1a1a2e;">Disponibilité</div>
+                        <div style="font-size:11px;color:#6c757d;">24h/24, 7j/7</div>
+                    </div>
+                </div>
+
+                <hr style="border-color:#eee;margin-bottom:25px;">
+
+                <!-- ======================================== -->
+                <!-- FORMULAIRE -->
+                <!-- ======================================== -->
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <!-- Afficher les erreurs globales -->
+                    {% if form.errors %}
+                        <div style="background:#f8d7da;color:#721c24;padding:12px 15px;border-radius:8px;margin-bottom:15px;">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            Veuillez corriger les erreurs ci-dessous.
+                        </div>
+                    {% endif %}
+
+                    <!-- Champ Nom Complet -->
+                    <div class="mb-3">
+                        <label for="{{ form.nom_complet.id_for_label }}" style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;color:#1a1a2e;">
+                            {{ form.nom_complet.label }}
+                            {% if form.nom_complet.field.required %}
+                                <span style="color:#dc3545;">*</span>
+                            {% endif %}
+                        </label>
+                        {{ form.nom_complet }}
+                        {% if form.nom_complet.errors %}
+                            <div style="color:#dc3545;font-size:12px;margin-top:5px;">
+                                {{ form.nom_complet.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Champ Email -->
+                    <div class="mb-3">
+                        <label for="{{ form.email.id_for_label }}" style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;color:#1a1a2e;">
+                            {{ form.email.label }}
+                            {% if form.email.field.required %}
+                                <span style="color:#dc3545;">*</span>
+                            {% endif %}
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div style="color:#dc3545;font-size:12px;margin-top:5px;">
+                                {{ form.email.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Champ Téléphone -->
+                    <div class="mb-3">
+                        <label for="{{ form.telephone.id_for_label }}" style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;color:#1a1a2e;">
+                            {{ form.telephone.label }}
+                        </label>
+                        {{ form.telephone }}
+                        {% if form.telephone.errors %}
+                            <div style="color:#dc3545;font-size:12px;margin-top:5px;">
+                                {{ form.telephone.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Champ Sujet -->
+                    <div class="mb-3">
+                        <label for="{{ form.sujet.id_for_label }}" style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;color:#1a1a2e;">
+                            {{ form.sujet.label }}
+                            {% if form.sujet.field.required %}
+                                <span style="color:#dc3545;">*</span>
+                            {% endif %}
+                        </label>
+                        {{ form.sujet }}
+                        {% if form.sujet.errors %}
+                            <div style="color:#dc3545;font-size:12px;margin-top:5px;">
+                                {{ form.sujet.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Champ Message -->
+                    <div class="mb-3">
+                        <label for="{{ form.message.id_for_label }}" style="font-size:13px;font-weight:600;display:block;margin-bottom:5px;color:#1a1a2e;">
+                            {{ form.message.label }}
+                            {% if form.message.field.required %}
+                                <span style="color:#dc3545;">*</span>
+                            {% endif %}
+                        </label>
+                        {{ form.message }}
+                        {% if form.message.errors %}
+                            <div style="color:#dc3545;font-size:12px;margin-top:5px;">
+                                {{ form.message.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Info -->
+                    <div style="background:#f8f9fa;border-left:4px solid #28a745;padding:12px 15px;border-radius:8px;margin-bottom:20px;">
+                        <i class="fas fa-info-circle me-2" style="color:#28a745;"></i>
+                        <strong style="font-size:13px;">Information :</strong>
+                        <span style="font-size:13px;color:#6c757d;">Notre équipe vous répondra sous 24 à 48 heures ouvrées.</span>
+                    </div>
+
+                    <!-- Boutons -->
+                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+                        <a href="{% url 'accueil' %}" 
+                           style="background:#6c757d;color:white;border:none;border-radius:8px;padding:10px 25px;font-size:13px;text-decoration:none;cursor:pointer;display:inline-block;transition:all 0.3s ease;" 
+                           onmouseover="this.style.backgroundColor='#5a6268';" 
+                           onmouseout="this.style.backgroundColor='#6c757d';">
+                            <i class="fas fa-arrow-left me-2"></i>Retour
+                        </a>
+                        <button type="submit" 
+                                style="background:linear-gradient(135deg,#28a745,#20c997);color:white;border:none;border-radius:8px;padding:10px 30px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.3s ease;"
+                                onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 20px rgba(40,167,69,0.3)';" 
+                                onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';">
+                            <i class="fas fa-paper-plane me-2"></i>Envoyer
+                        </button>
+                    </div>
+
+                </form>
+                <!-- ======================================== -->
+                <!-- FIN FORMULAIRE -->
+                <!-- ======================================== -->
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Style des champs de formulaire */
+    .form-control {
+        font-size: 14px !important;
+        border-radius: 8px !important;
+        border: 1px solid #ddd !important;
+        padding: 10px 15px !important;
+        width: 100% !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .form-control:focus {
+        border-color: #28a745 !important;
+        box-shadow: 0 0 0 3px rgba(40,167,69,0.1) !important;
+        outline: none !important;
+    }
+    
+    textarea.form-control {
+        resize: vertical !important;
+        min-height: 120px !important;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .support-contact-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
+</style>
+{% endblock %}

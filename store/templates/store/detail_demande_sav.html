@@ -1,0 +1,270 @@
+<!-- store/templates/store/detail_demande_sav.html -->
+{% extends 'store/base.html' %}
+{% block content %}
+<div class="container py-4">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="font-size:13px;">
+            <li class="breadcrumb-item"><a href="{% url 'accueil' %}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'mes_demandes_sav' %}">Mes demandes SAV</a></li>
+            <li class="breadcrumb-item active">Demande #{{ demande.id }}</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- Carte principale -->
+            <div style="background:white;border:1px solid #e8ecf1;border-radius:16px;padding:30px;box-shadow:0 2px 10px rgba(0,0,0,0.04);">
+                
+                <!-- En-tête -->
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #17a2b8;padding-bottom:15px;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+                    <div>
+                        <h4 style="font-weight:700;color:#1a1a2e;margin:0;font-size:20px;">
+                            Demande SAV #{{ demande.id }}
+                        </h4>
+                        <p style="color:#6c757d;font-size:13px;margin:4px 0 0;">
+                            <i class="far fa-calendar-alt me-1"></i>
+                            Créée le {{ demande.date_creation|date:"d/m/Y à H:i" }}
+                        </p>
+                    </div>
+                    <div>
+                        {% if demande.statut == 'en_attente' %}
+                            <span style="background:#ffc107;color:#111;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;">
+                                ⏳ {{ demande.get_statut_display }}
+                            </span>
+                        {% elif demande.statut == 'validee' %}
+                            <span style="background:#17a2b8;color:white;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;">
+                                ✅ {{ demande.get_statut_display }}
+                            </span>
+                        {% elif demande.statut == 'en_cours' or demande.statut == 'expediee' %}
+                            <span style="background:#667eea;color:white;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;">
+                                🔧 {{ demande.get_statut_display }}
+                            </span>
+                        {% elif demande.statut == 'terminee' %}
+                            <span style="background:#28a745;color:white;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;">
+                                ✅ {{ demande.get_statut_display }}
+                            </span>
+                        {% elif demande.statut == 'rejetee' %}
+                            <span style="background:#dc3545;color:white;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;">
+                                ❌ {{ demande.get_statut_display }}
+                            </span>
+                        {% else %}
+                            <span style="background:#6c757d;color:white;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;">
+                                {{ demande.get_statut_display }}
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Grille d'informations -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:25px;">
+                    <div>
+                        <div style="font-size:12px;color:#6c757d;margin-bottom:4px;font-weight:500;">
+                            <i class="fas fa-tag me-1" style="color:#17a2b8;"></i>Type de demande
+                        </div>
+                        <div style="font-weight:600;color:#1a1a2e;font-size:14px;">
+                            {{ demande.get_type_demande_display }}
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:#6c757d;margin-bottom:4px;font-weight:500;">
+                            <i class="fas fa-question-circle me-1" style="color:#17a2b8;"></i>Motif
+                        </div>
+                        <div style="font-weight:600;color:#1a1a2e;font-size:14px;">
+                            {{ demande.get_motif_display }}
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:#6c757d;margin-bottom:4px;font-weight:500;">
+                            <i class="fas fa-shopping-bag me-1" style="color:#17a2b8;"></i>Numéro de commande
+                        </div>
+                        <div style="font-weight:600;color:#1a1a2e;font-size:14px;">
+                            {% if demande.numero_commande %}
+                                {{ demande.numero_commande }}
+                            {% else %}
+                                <span style="color:#6c757d;">Non spécifié</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:#6c757d;margin-bottom:4px;font-weight:500;">
+                            <i class="fas fa-cube me-1" style="color:#17a2b8;"></i>Quantité
+                        </div>
+                        <div style="font-weight:600;color:#1a1a2e;font-size:14px;">
+                            {{ demande.quantite }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div style="margin-bottom:25px;">
+                    <div style="font-size:12px;color:#6c757d;margin-bottom:8px;font-weight:500;">
+                        <i class="fas fa-file-alt me-1" style="color:#17a2b8;"></i>Description
+                    </div>
+                    <div style="background:#f8f9fa;padding:16px 20px;border-radius:10px;font-size:14px;color:#333;line-height:1.8;border:1px solid #e8ecf1;">
+                        {{ demande.description|linebreaks }}
+                    </div>
+                </div>
+
+                <!-- Pièces jointes -->
+                {% if demande.piece_jointe or demande.piece_jointe_2 %}
+                    <div style="margin-bottom:25px;">
+                        <div style="font-size:12px;color:#6c757d;margin-bottom:8px;font-weight:500;">
+                            <i class="fas fa-paperclip me-1" style="color:#17a2b8;"></i>Pièces jointes
+                        </div>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                            {% if demande.piece_jointe %}
+                                <a href="{{ demande.piece_jointe.url }}" target="_blank" 
+                                   style="background:#f8f9fa;padding:8px 16px;border-radius:8px;text-decoration:none;color:#007185;font-size:13px;border:1px solid #e8ecf1;transition:all 0.3s ease;"
+                                   onmouseover="this.style.backgroundColor='#e9ecef';" 
+                                   onmouseout="this.style.backgroundColor='#f8f9fa';">
+                                    <i class="fas fa-file me-2"></i>Voir la pièce jointe 1
+                                </a>
+                            {% endif %}
+                            {% if demande.piece_jointe_2 %}
+                                <a href="{{ demande.piece_jointe_2.url }}" target="_blank" 
+                                   style="background:#f8f9fa;padding:8px 16px;border-radius:8px;text-decoration:none;color:#007185;font-size:13px;border:1px solid #e8ecf1;transition:all 0.3s ease;"
+                                   onmouseover="this.style.backgroundColor='#e9ecef';" 
+                                   onmouseout="this.style.backgroundColor='#f8f9fa';">
+                                    <i class="fas fa-file me-2"></i>Voir la pièce jointe 2
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Commentaire du support -->
+                {% if demande.commentaire %}
+                    <div style="background:#e3f2fd;border-left:4px solid #17a2b8;padding:15px 20px;border-radius:10px;margin-bottom:25px;">
+                        <div style="font-size:12px;color:#6c757d;margin-bottom:4px;">
+                            <i class="fas fa-user-shield me-1"></i>Commentaire du support
+                        </div>
+                        <div style="font-size:14px;color:#1a1a2e;line-height:1.6;">
+                            {{ demande.commentaire }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Suivi de retour -->
+                {% if demande.numero_suivi %}
+                    <div style="background:#f8f9fa;border-radius:10px;padding:16px 20px;margin-bottom:25px;border:1px solid #e8ecf1;">
+                        <div style="font-size:12px;color:#6c757d;margin-bottom:8px;font-weight:500;">
+                            <i class="fas fa-truck me-1" style="color:#17a2b8;"></i>Suivi de retour
+                        </div>
+                        <div style="display:flex;gap:30px;flex-wrap:wrap;">
+                            <div>
+                                <span style="font-size:12px;color:#6c757d;">Numéro de suivi</span>
+                                <div style="font-weight:600;color:#1a1a2e;font-size:14px;">{{ demande.numero_suivi }}</div>
+                            </div>
+                            {% if demande.transporteur %}
+                                <div>
+                                    <span style="font-size:12px;color:#6c757d;">Transporteur</span>
+                                    <div style="font-weight:600;color:#1a1a2e;font-size:14px;">{{ demande.transporteur }}</div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Remboursement -->
+                {% if demande.montant_remboursement %}
+                    <div style="background:#f8f9fa;border-radius:10px;padding:16px 20px;margin-bottom:25px;border:1px solid #e8ecf1;">
+                        <div style="font-size:12px;color:#6c757d;margin-bottom:8px;font-weight:500;">
+                            <i class="fas fa-money-bill-wave me-1" style="color:#28a745;"></i>Remboursement
+                        </div>
+                        <div style="display:flex;gap:30px;flex-wrap:wrap;align-items:center;">
+                            <div>
+                                <span style="font-size:12px;color:#6c757d;">Montant</span>
+                                <div style="font-weight:700;color:#28a745;font-size:18px;">
+                                    {{ demande.montant_remboursement }} DH
+                                </div>
+                            </div>
+                            <div>
+                                <span style="font-size:12px;color:#6c757d;">Statut</span>
+                                <div>
+                                    {% if demande.remboursement_effectue %}
+                                        <span style="color:#28a745;font-weight:600;">
+                                            <i class="fas fa-check-circle me-1"></i>Effectué
+                                        </span>
+                                    {% else %}
+                                        <span style="color:#ffc107;font-weight:600;">
+                                            <i class="fas fa-clock me-1"></i>En attente
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Boutons -->
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;border-top:1px solid #eee;padding-top:20px;margin-top:5px;">
+                    <a href="{% url 'mes_demandes_sav' %}" 
+                       style="background:#6c757d;color:white;border:none;border-radius:8px;padding:10px 24px;font-size:13px;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.3s ease;" 
+                       onmouseover="this.style.backgroundColor='#5a6268';this.style.transform='translateY(-2px)';" 
+                       onmouseout="this.style.backgroundColor='#6c757d';this.style.transform='translateY(0)';">
+                        <i class="fas fa-arrow-left"></i> Retour
+                    </a>
+                    
+                    <div style="display:flex;gap:10px;">
+                        {% if demande.statut == 'en_attente' %}
+                            <a href="{% url 'annuler_demande_sav' demande.id %}" 
+                               style="background:#dc3545;color:white;border:none;border-radius:8px;padding:10px 24px;font-size:13px;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.3s ease;" 
+                               onclick="return confirm('Êtes-vous sûr de vouloir annuler cette demande ?')"
+                               onmouseover="this.style.backgroundColor='#c82333';this.style.transform='translateY(-2px)';" 
+                               onmouseout="this.style.backgroundColor='#dc3545';this.style.transform='translateY(0)';">
+                                <i class="fas fa-times"></i> Annuler la demande
+                            </a>
+                        {% endif %}
+                        
+                        <a href="#" 
+                           style="background:#17a2b8;color:white;border:none;border-radius:8px;padding:10px 24px;font-size:13px;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.3s ease;" 
+                           onclick="window.scrollTo({top:0,behavior:'smooth'});"
+                           onmouseover="this.style.backgroundColor='#138496';this.style.transform='translateY(-2px)';" 
+                           onmouseout="this.style.backgroundColor='#17a2b8';this.style.transform='translateY(0)';">
+                            <i class="fas fa-arrow-up"></i> Retour en haut
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Styles additionnels -->
+<style>
+    @media (max-width: 768px) {
+        .container {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        .detail-grid {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+        }
+        .breadcrumb {
+            font-size: 12px !important;
+        }
+        .card-padding {
+            padding: 20px !important;
+        }
+        .header-flex {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+        }
+        .btn-group-mobile {
+            flex-direction: column !important;
+            width: 100% !important;
+        }
+        .btn-group-mobile a,
+        .btn-group-mobile button {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+    }
+</style>
+{% endblock %}

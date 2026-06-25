@@ -1,0 +1,354 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Statistiques Administration - ShopZone{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- En-tête -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-2">
+                <i class="fas fa-chart-line"></i> Tableau de Bord - Statistiques
+            </h1>
+            <p class="text-muted">Vue d'ensemble de votre boutique en ligne</p>
+        </div>
+    </div>
+
+    <!-- Cartes principales -->
+    <div class="row mb-4">
+        <!-- Commandes -->
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text mb-0 opacity-75">Commandes</p>
+                            <h3 class="mb-0">{{ nombre_commandes }}</h3>
+                        </div>
+                        <i class="fas fa-shopping-cart fa-3x opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clients -->
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text mb-0 opacity-75">Clients</p>
+                            <h3 class="mb-0">{{ nombre_clients }}</h3>
+                        </div>
+                        <i class="fas fa-users fa-3x opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Produits -->
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text mb-0 opacity-75">Produits</p>
+                            <h3 class="mb-0">{{ nombre_produits }}</h3>
+                        </div>
+                        <i class="fas fa-box fa-3x opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Catégories -->
+        <div class="col-md-6 col-lg-3 mb-3">
+            <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-text mb-0 opacity-75">Catégories</p>
+                            <h3 class="mb-0">{{ nombre_categories }}</h3>
+                        </div>
+                        <i class="fas fa-list fa-3x opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Montants -->
+    <div class="row mb-4">
+        <!-- Montant total -->
+        <div class="col-md-6 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-money-bill-wave text-success"></i> Montant Total des Commandes
+                    </h5>
+                    <h2 class="text-success">{{ montant_total|floatformat:2 }} DH</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paiements réussis -->
+        <div class="col-md-6 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-check-circle text-primary"></i> Paiements Réussis
+                    </h5>
+                    <h2 class="text-primary">{{ montant_paiements_reussis|floatformat:2 }} DH</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistiques des commandes -->
+    <div class="row mb-4">
+        <div class="col-lg-6 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-tasks"></i> Statuts des Commandes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="p-3" style="background-color: #fff3cd; border-radius: 8px;">
+                                <h4 class="text-warning mb-0">{{ statuts_commandes.en_attente }}</h4>
+                                <small class="text-muted">En attente</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="p-3" style="background-color: #d1ecf1; border-radius: 8px;">
+                                <h4 class="text-info mb-0">{{ statuts_commandes.confirmee }}</h4>
+                                <small class="text-muted">Confirmées</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="p-3" style="background-color: #d4edda; border-radius: 8px;">
+                                <h4 class="text-success mb-0">{{ statuts_commandes.en_preparation }}</h4>
+                                <small class="text-muted">En préparation</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="p-3" style="background-color: #f8d7da; border-radius: 8px;">
+                                <h4 class="text-danger mb-0">{{ statuts_commandes.annulee }}</h4>
+                                <small class="text-muted">Annulées</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistiques de stock -->
+        <div class="col-lg-6 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-warehouse"></i> État du Stock
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-4 mb-3">
+                            <div class="p-3" style="background-color: #f8d7da; border-radius: 8px;">
+                                <h4 class="text-danger mb-0">{{ produits_rupture }}</h4>
+                                <small class="text-muted">Rupture</small>
+                            </div>
+                        </div>
+                        <div class="col-4 mb-3">
+                            <div class="p-3" style="background-color: #fff3cd; border-radius: 8px;">
+                                <h4 class="text-warning mb-0">{{ produits_stock_faible }}</h4>
+                                <small class="text-muted">Stock faible</small>
+                            </div>
+                        </div>
+                        <div class="col-4 mb-3">
+                            <div class="p-3" style="background-color: #d4edda; border-radius: 8px;">
+                                <h4 class="text-success mb-0">{{ produits_bon_stock }}</h4>
+                                <small class="text-muted">Bon stock</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistiques de paiement -->
+    <div class="row mb-4">
+        <div class="col-lg-6 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-credit-card"></i> Statuts des Paiements
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-4 mb-3">
+                            <div class="p-3" style="background-color: #d4edda; border-radius: 8px;">
+                                <h4 class="text-success mb-0">{{ paiements_reussis }}</h4>
+                                <small class="text-muted">Réussis</small>
+                            </div>
+                        </div>
+                        <div class="col-4 mb-3">
+                            <div class="p-3" style="background-color: #fff3cd; border-radius: 8px;">
+                                <h4 class="text-warning mb-0">{{ paiements_en_attente }}</h4>
+                                <small class="text-muted">En attente</small>
+                            </div>
+                        </div>
+                        <div class="col-4 mb-3">
+                            <div class="p-3" style="background-color: #f8d7da; border-radius: 8px;">
+                                <h4 class="text-danger mb-0">{{ paiements_echoues }}</h4>
+                                <small class="text-muted">Échoués</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modes de paiement -->
+        <div class="col-lg-6 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-pie"></i> Modes de Paiement les Plus Utilisés
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if modes_paiement %}
+                        <ul class="list-unstyled">
+                            {% for mode in modes_paiement %}
+                                <li class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span>
+                                            {% if mode.mode_paiement == 'carte' %}
+                                                <i class="fas fa-credit-card text-primary"></i> Carte bancaire
+                                            {% elif mode.mode_paiement == 'paypal' %}
+                                                <i class="fab fa-paypal text-info"></i> PayPal
+                                            {% else %}
+                                                <i class="fas fa-university text-secondary"></i> Virement bancaire
+                                            {% endif %}
+                                        </span>
+                                        <span class="badge bg-primary rounded-pill">{{ mode.count }}</span>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Aucun paiement enregistré</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Produits les plus vendus -->
+    <div class="row mb-4">
+        <div class="col-lg-6 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-star"></i> Top 10 - Produits les Plus Vendus
+                    </h5>
+                </div>
+                <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                    {% if produits_les_plus_vendus %}
+                        <table class="table table-sm table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th class="text-end">Quantité</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for produit in produits_les_plus_vendus %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'detail_produit' produit.produit__id %}" class="text-decoration-none">
+                                                {{ produit.produit__nom|truncatewords:3 }}
+                                            </a>
+                                        </td>
+                                        <td class="text-end">
+                                            <span class="badge bg-success">{{ produit.quantite_totale }}</span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="text-muted">Aucun produit vendu</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Catégories les plus populaires -->
+        <div class="col-lg-6 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-fire"></i> Catégories les Plus Populaires
+                    </h5>
+                </div>
+                <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                    {% if categories_populaires %}
+                        <table class="table table-sm table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Catégorie</th>
+                                    <th class="text-end">Quantité vendue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for categorie in categories_populaires %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'liste_produits' %}?categorie={{ categorie.produit__categorie__id }}" class="text-decoration-none">
+                                                {{ categorie.produit__categorie__nom }}
+                                            </a>
+                                        </td>
+                                        <td class="text-end">
+                                            <span class="badge bg-info">{{ categorie.quantite_totale }}</span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="text-muted">Aucune catégorie populaire</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lien de retour à l'administration -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <a href="/admin/" class="btn btn-secondary btn-lg">
+                <i class="fas fa-cog"></i> Retourner à l'Administration Django
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+    table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %}
